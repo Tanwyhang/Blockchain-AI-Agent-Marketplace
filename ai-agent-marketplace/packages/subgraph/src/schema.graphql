@@ -1,0 +1,35 @@
+type Listing @entity(immutable: false) {
+  id: ID!                   # listingId
+  seller: Bytes!
+  tokenId: BigInt!
+  price: BigInt!
+  active: Boolean!
+  createdAt: BigInt!
+  txHash: Bytes!
+}
+
+type Sale @entity(immutable: true) {
+  id: ID!                   # txHash-logIndex
+  listingId: BigInt!
+  buyer: Bytes!
+  seller: Bytes!
+  tokenId: BigInt!
+  price: BigInt!
+  timestamp: BigInt!
+  txHash: Bytes!
+}
+
+type AgentOwnership @entity(immutable: false) {
+  id: ID!                   # tokenId
+  owner: Bytes!
+  updatedAt: BigInt!
+}
+
+type OwnershipTransfer @entity(immutable: true) {
+  id: ID!                   # txHash-logIndex
+  tokenId: BigInt!
+  from: Bytes!
+  to: Bytes!
+  timestamp: BigInt!
+  txHash: Bytes!
+}

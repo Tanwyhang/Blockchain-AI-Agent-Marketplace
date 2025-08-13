@@ -1,0 +1,51 @@
+specVersion: 0.0.4
+description: AI Agent Marketplace subgraph
+repository: https://github.com/scaffold-eth/se-2/packages/subgraph/
+schema:
+  file: ./src/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: AI_Agent_Marketplace
+    network: localhost
+    source:
+      abi: AI_Agent_Marketplace
+      # Tip: set address after deploy, or rely on localhost build without address
+      address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Listing
+        - Sale
+      abis:
+        - name: AI_Agent_Marketplace
+          file: ./abis/localhost_AI_Agent_Marketplace.json
+      eventHandlers:
+        - event: Listed(indexed uint256,indexed address,indexed uint256,uint256)
+          handler: handleListed
+        - event: ListingCanceled(indexed uint256,indexed address)
+          handler: handleListingCanceled
+        - event: Purchased(indexed uint256,indexed address,indexed address,uint256)
+          handler: handlePurchased
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: AI_Agent_NFT
+    network: localhost
+    source:
+      abi: AI_Agent_NFT
+      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - AgentOwnership
+        - OwnershipTransfer
+      abis:
+        - name: AI_Agent_NFT
+          file: ./abis/localhost_AI_Agent_NFT.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
