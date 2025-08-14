@@ -8,7 +8,7 @@
     "clean-node": "rm -rf graph-node/data/",
     "codegen": "graph codegen",
     "create-local": "graph create --node http://localhost:8020/ scaffold-eth/your-contract",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ your-contract",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ scaffold-eth/your-contract",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract",
     "graph": "graph",
     "local-ship": "yarn abi-copy && yarn codegen && yarn build --network localhost && yarn deploy-local",

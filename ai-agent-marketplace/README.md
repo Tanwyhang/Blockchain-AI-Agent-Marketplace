@@ -1,21 +1,24 @@
-# 🏗 Scaffold-ETH 2
+# 🤖 AI Agent Marketplace
+
+A decentralized marketplace for buying and selling AI agents built on Ethereum using Scaffold-ETH 2.
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Documentation</a> | 
   <a href="https://scaffoldeth.io">Website</a> 
 </h4>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+🧪 A specialized dApp for trading AI agents as NFTs on the Ethereum blockchain. Users can mint, list, and purchase AI agents with various capabilities and models.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+## Features
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+- 🤖 **AI Agent NFTs**: Mint unique AI agents with specific models, capabilities, and licenses
+- 🛒 **Marketplace**: Buy and sell AI agents in a decentralized marketplace
+- 💰 **ETH Payments**: All transactions are handled in ETH
+- 📊 **The Graph Integration**: Efficient querying of marketplace data
+- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet
+- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network
 
 ## Requirements
 
@@ -24,30 +27,176 @@ Before you begin, you need to install the following tools:
 - [Node (>= v20.18.3)](https://nodejs.org/en/download/)
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
+- [Docker](https://docs.docker.com/get-docker/) (for The Graph integration)
 
-## Quickstart
+## 🚀 Getting Started
 
-To get started with Scaffold-ETH 2, follow the steps below:
+Follow these steps to run the AI Agent Marketplace locally:
 
-1. Install dependencies if it was skipped in CLI:
+### 1. Install Dependencies
 
-```
-cd my-dapp-example
+```bash
+git clone <your-repo-url>
+cd ai-agent-marketplace
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+### 2. Start Local Blockchain
 
-```
+In your first terminal, start a local Ethereum network:
+
+```bash
 yarn chain
 ```
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
 
-3. On a second terminal, deploy the test contract:
+**Keep this terminal running!** 🔥
+
+### 3. Deploy Smart Contracts
+
+In a second terminal, deploy the AI Agent Marketplace contracts:
+
+```bash
+yarn deploy
+```
+
+This command deploys the smart contracts to the local network:
+- `AI_Agent_Marketplace.sol` - Main marketplace contract for listing and buying agents
+- `AI_Agent_NFT.sol` - NFT contract for AI agents
+
+The contracts are located in `packages/hardhat/contracts` and the deploy scripts are in `packages/hardhat/deploy`.
+
+### 4. Start Frontend Application
+
+In a third terminal, start the NextJS frontend:
+
+```bash
+yarn start
+```
+
+Visit your app at: `http://localhost:3000`
+
+You can now:
+- 🎨 **Mint AI Agents**: Go to `/sell` to create new AI agent NFTs
+- 🛒 **Browse Marketplace**: Visit `/marketplace` to see listed agents
+- 🔧 **Debug Contracts**: Use the `Debug Contracts` page to interact with smart contracts directly
+
+### 5. Set Up The Graph (Optional but Recommended)
+
+For efficient querying of marketplace data, set up The Graph integration:
+
+#### Prerequisites
+- Ensure Docker is running on your system
+
+#### Clean and Start Graph Node
+
+```bash
+# Clean any old data (run this if you need to reset)
+yarn subgraph:clean-node
+
+# Start the graph node
+yarn subgraph:run-node
+```
+
+**Keep this terminal running!** The Graph node needs to stay active.
+
+#### Deploy Subgraph
+
+In a new terminal:
+
+```bash
+# Create the subgraph
+yarn subgraph:create-local
+
+# Deploy the subgraph
+yarn subgraph:deploy-local
+```
+
+## 📁 Project Structure
 
 ```
-yarn deploy
+ai-agent-marketplace/
+├── packages/
+│   ├── hardhat/          # Smart contracts and deployment scripts
+│   │   ├── contracts/    # Solidity contracts
+│   │   ├── deploy/       # Deployment scripts
+│   │   └── test/         # Contract tests
+│   ├── nextjs/           # Frontend application
+│   │   ├── app/          # Next.js app router pages
+│   │   ├── components/   # React components
+│   │   └── services/     # Web3 services and utilities
+│   └── subgraph/         # The Graph configuration
+│       ├── src/          # Subgraph mappings
+│       └── abis/         # Contract ABIs
+```
+
+## 🧪 Development Commands
+
+### Smart Contract Development
+
+```bash
+# Run contract tests
+yarn hardhat:test
+
+# Verify contracts
+yarn verify
+
+# Generate TypeScript types from contracts
+yarn generate
+```
+
+### Frontend Development
+
+```bash
+# Start development server
+yarn start
+
+# Build for production
+yarn build
+
+# Lint code
+yarn lint
+```
+
+### The Graph Development
+
+```bash
+# Generate subgraph code
+yarn subgraph:codegen
+
+# Build subgraph
+yarn subgraph:build
+
+# Clean subgraph data
+yarn subgraph:clean-node
+```
+
+## 🎯 Usage Guide
+
+### Creating AI Agents
+
+1. Navigate to `/sell`
+2. Fill in agent details:
+   - Model name (e.g., "GPT-4", "Claude-3")
+   - Capabilities (comma-separated)
+   - License type
+   - Price in ETH
+3. Click "Create & List Agent"
+4. Confirm the transaction in your wallet
+
+### Buying AI Agents
+
+1. Navigate to `/marketplace`
+2. Browse available agents
+3. Click "Buy" on desired agent
+4. Confirm purchase transaction
+5. Agent NFT will be transferred to your wallet
+
+### Managing Your Collection
+
+- View owned agents in wallet or block explorer
+- Re-list agents for sale through the marketplace
 ```
 
 This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
@@ -94,9 +243,54 @@ This will spin up all the containers for The Graph using docker-compose. You wil
 
 ##### Linux Only
 
-**For hardhat**
+### Managing Your Collection
 
-Update your package.json in packages/hardhat with the following command line option for the hardhat chain.
+- View owned agents in wallet or block explorer
+- Re-list agents for sale through the marketplace
+
+## 🛠 Troubleshooting
+
+### Common Issues
+
+1. **"Marketplace not deployed in mapping"**
+   - Ensure you've run `yarn deploy` after starting `yarn chain`
+   - Check that the contracts are deployed to the correct network
+
+2. **Subgraph not syncing**
+   - Restart the graph node: `yarn subgraph:clean-node` then `yarn subgraph:run-node`
+   - Redeploy the subgraph: `yarn subgraph:deploy-local`
+
+3. **Frontend not connecting to wallet**
+   - Make sure your wallet is connected to the local network (usually localhost:8545)
+   - Import the local account private keys if needed
+
+4. **Docker issues with The Graph**
+   - Ensure Docker is running and has sufficient resources
+   - On Windows, make sure Docker Desktop is running
+   - Try restarting Docker if containers fail to start
+
+### Useful Development Tips
+
+- Use the **Debug Contracts** page to test contract functions directly
+- Check browser console for detailed error messages
+- Use `yarn hardhat:test` to run contract tests before deployment
+- Monitor the terminal running `yarn chain` for transaction logs
+
+## 📚 Learn More
+
+- [Scaffold-ETH 2 Documentation](https://docs.scaffoldeth.io)
+- [Hardhat Documentation](https://hardhat.org/docs)
+- [The Graph Documentation](https://thegraph.com/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Wagmi Documentation](https://wagmi.sh)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
 
 ```
 "chain": "hardhat node --network hardhat --no-deploy --hostname 0.0.0.0"
